@@ -122,26 +122,14 @@
         },
         {
             "id": 21,
-            "name": "super shirt",
-            "category": "kids",
-            "price": 14.9
-        },
-        {
-            "id": 21,
-            "name": "super shirt",
-            "category": "kids",
-            "price": 14.9
-        },
-        {
-            "id": 23,
-            "name": "lala",
-            "category": "kids",
+            "name": "nameProduct",
+            "category": "categoryProduct",
             "price": 9.0
         },
         {
-            "id": 23,
-            "name": "lala",
-            "category": "kids",
+            "id": 22,
+            "name": "nameProduct",
+            "category": "nameCategory",
             "price": 9.0
         }
     ],
@@ -161,6 +149,10 @@
         {
             "id": 4,
             "name": "girls"
+        },
+        {
+            "id": 5,
+            "name": "nameCategory"
         }
     ],
     "favorites": []
