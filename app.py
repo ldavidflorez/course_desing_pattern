@@ -1,25 +1,16 @@
 from flask import Flask
-from flask_restful import Api
-from endpoints.products import ProductsResource
-from endpoints.auth import AuthenticationResource
-from endpoints.categories import CategoriesResource
-from endpoints.favorites import FavoritesResource
+from blueprints.auth_bp import auth_bp
+from blueprints.products_bp import products_bp
+from blueprints.categories_bp import categories_bp
+from blueprints.favorites_bp import favorites_bp
 
 app = Flask(__name__)
-api = Api(app)
 
-import json
-
-with open("db.json", "r") as file:
-    products = json.load(file)
-
-api.add_resource(AuthenticationResource, "/auth")
-
-api.add_resource(ProductsResource, "/products", "/products/<int:product_id>")
-
-api.add_resource(CategoriesResource, "/categories", "/categories/<int:category_id>")
-
-api.add_resource(FavoritesResource, "/favorites")
+# Register blueprints
+app.register_blueprint(auth_bp)
+app.register_blueprint(products_bp)
+app.register_blueprint(categories_bp)
+app.register_blueprint(favorites_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
