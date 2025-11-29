@@ -42,6 +42,7 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - **Old Endpoints**: Removed `endpoints/` directory and direct resource registration in favor of blueprints and services.
+- **Obsolete Directories**: Removed `utils/` (old DatabaseConnection) and `__pycache__/` after full migration.
 
 ### Added
 - **UML Diagrams**: Added PlantUML diagrams (`diagrams/original_architecture.puml` and `diagrams/refactored_architecture.puml`) to compare architectures.
