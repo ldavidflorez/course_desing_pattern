@@ -25,3 +25,20 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - Unused `add_*` calls in endpoints that were causing duplication.
+
+## [Refactor] - 2025-11-29
+
+### Added
+- **Models with Builder Pattern**: Created `Product`, `Category`, and `Favorite` models with Builder pattern for fluent object construction.
+- **Repository Pattern**: Implemented interfaces (`IProductRepository`, etc.) and JSON-based implementations for data persistence abstraction.
+- **Strategy Pattern for Auth**: Added `IAuthStrategy` interface and `TokenAuthStrategy` to eliminate auth duplication.
+- **Service Layer**: Introduced `ProductService`, `CategoryService`, and `FavoriteService` to separate business logic from controllers.
+- **Blueprints for Routing**: Modularized routes using Flask Blueprints (`auth_bp`, `products_bp`, etc.) for better organization.
+- **Dependency Injection**: Simple DI setup in blueprints for repositories and services.
+
+### Changed
+- **App Structure**: Refactored `app.py` to register blueprints instead of direct Flask-RESTful resources.
+- **Endpoints**: Migrated from monolithic resources to service-based blueprints, improving SRP and testability.
+
+### Removed
+- **Old Endpoints**: Removed `endpoints/` directory and direct resource registration in favor of blueprints and services.
