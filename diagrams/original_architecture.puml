@@ -1,0 +1,53 @@
+@startuml Original Architecture
+title Arquitectura Original
+
+class App {
+    +run()
+}
+
+class DatabaseConnection {
+    +connect()
+    +get_products()
+    +save_products()
+    +get_categories()
+    +save_categories()
+    +get_favorites()
+    +save_favorites()
+}
+
+class ProductsResource {
+    +get()
+    +post()
+    -is_valid_token()
+}
+
+class CategoriesResource {
+    +get()
+    +post()
+    +delete()
+    -is_valid_token()
+}
+
+class FavoritesResource {
+    +get()
+    +post()
+    +delete()
+    -is_valid_token()
+}
+
+class AuthenticationResource {
+    +post()
+}
+
+App --> ProductsResource : registra
+App --> CategoriesResource : registra
+App --> FavoritesResource : registra
+App --> AuthenticationResource : registra
+
+ProductsResource --> DatabaseConnection : usa directamente
+CategoriesResource --> DatabaseConnection : usa directamente
+FavoritesResource --> DatabaseConnection : usa directamente
+
+note right of ProductsResource : Violación SRP\nDuplicación de auth\nAcoplamiento alto
+note right of DatabaseConnection : Mezcla persistencia\ny lógica
+@enduml

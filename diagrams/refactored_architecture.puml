@@ -1,0 +1,175 @@
+@startuml Refactored Architecture
+title Arquitectura Refactorizada (Patrones de Diseño)
+
+package Models {
+    class Product {
+        +id
+        +name
+        +category
+        +price
+        +to_dict()
+        +from_dict()
+    }
+
+    class Category {
+        +id
+        +name
+        +to_dict()
+        +from_dict()
+    }
+
+    class Favorite {
+        +user_id
+        +product_id
+        +to_dict()
+        +from_dict()
+    }
+
+    class ProductBuilder {
+        +set_name()
+        +set_category()
+        +set_price()
+        +build()
+    }
+
+    ProductBuilder --> Product : construye
+}
+
+package Repositories {
+    interface IProductRepository {
+        +get_all()
+        +get_by_id()
+        +get_by_category()
+        +add()
+        +save_all()
+    }
+
+    interface ICategoryRepository {
+        +get_all()
+        +get_by_id()
+        +add()
+        +save_all()
+    }
+
+    interface IFavoriteRepository {
+        +get_all()
+        +add()
+        +save_all()
+        +remove()
+    }
+
+    class JsonProductRepository {
+        +get_all()
+        +get_by_id()
+        +get_by_category()
+        +add()
+        +save_all()
+    }
+
+    class JsonCategoryRepository {
+        +get_all()
+        +get_by_id()
+        +add()
+        +save_all()
+    }
+
+    class JsonFavoriteRepository {
+        +get_all()
+        +add()
+        +save_all()
+        +remove()
+    }
+
+    JsonProductRepository ..|> IProductRepository
+    JsonCategoryRepository ..|> ICategoryRepository
+    JsonFavoriteRepository ..|> IFavoriteRepository
+}
+
+package Strategies {
+    interface IAuthStrategy {
+        +authenticate()
+    }
+
+    class TokenAuthStrategy {
+        +authenticate()
+    }
+
+    TokenAuthStrategy ..|> IAuthStrategy
+}
+
+package Services {
+    class ProductService {
+        +authenticate()
+        +get_all_products()
+        +get_product_by_id()
+        +get_products_by_category()
+        +create_product()
+    }
+
+    class CategoryService {
+        +authenticate()
+        +get_all_categories()
+        +get_category_by_id()
+        +create_category()
+        +delete_category()
+    }
+
+    class FavoriteService {
+        +authenticate()
+        +get_all_favorites()
+        +add_favorite()
+        +remove_favorite()
+    }
+
+    ProductService --> IProductRepository : inyecta
+    ProductService --> ICategoryRepository : inyecta
+    ProductService --> IAuthStrategy : inyecta
+
+    CategoryService --> ICategoryRepository : inyecta
+    CategoryService --> IAuthStrategy : inyecta
+
+    FavoriteService --> IFavoriteRepository : inyecta
+    FavoriteService --> IAuthStrategy : inyecta
+}
+
+package Blueprints {
+    class ProductsBlueprint {
+        +GET /products
+        +GET /products/<id>
+        +POST /products
+    }
+
+    class CategoriesBlueprint {
+        +GET /categories
+        +GET /categories/<id>
+        +POST /categories
+        +DELETE /categories
+    }
+
+    class FavoritesBlueprint {
+        +GET /favorites
+        +POST /favorites
+        +DELETE /favorites
+    }
+
+    class AuthBlueprint {
+        +POST /auth
+    }
+
+    ProductsBlueprint --> ProductService : usa
+    CategoriesBlueprint --> CategoryService : usa
+    FavoritesBlueprint --> FavoriteService : usa
+    AuthBlueprint --> IAuthStrategy : usa
+}
+
+class App {
+    +run()
+}
+
+App --> ProductsBlueprint : registra
+App --> CategoriesBlueprint : registra
+App --> FavoritesBlueprint : registra
+App --> AuthBlueprint : registra
+
+note right of App : Arquitectura limpia\nCapas separadas\nInyección de dependencias
+@enduml
