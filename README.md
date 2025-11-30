@@ -1,5 +1,7 @@
 # Descripción
 
+> **Nota importante:** El código original con malas prácticas de codificación está disponible en la rama `main`. Esta rama `refactor` contiene la versión mejorada aplicando patrones de diseño y principios SOLID.
+
 A continuación se presenta una implementación simple de una API REST con malas prácticas de codificación y sin diseño de software. Intenta mejorar este código aplicando todo lo que has aprendido sobre patrones de diseño de software, código limpio y principios SOLID.
 
 Esta versión ha sido refactorizada aplicando patrones de diseño como Builder, Repository, Strategy, Service Layer, Dependency Injection, Decorator y Blueprints, mejorando la mantenibilidad, testabilidad y extensibilidad.
