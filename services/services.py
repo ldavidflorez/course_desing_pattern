@@ -6,7 +6,6 @@ from repositories.interfaces import (
 from models.product import Product, ProductBuilder
 from models.category import Category, CategoryBuilder
 from models.favorite import Favorite, FavoriteBuilder
-from strategies.auth_context import AuthContext
 
 
 class ProductService:
@@ -14,14 +13,9 @@ class ProductService:
         self,
         product_repo: IProductRepository,
         category_repo: ICategoryRepository,
-        auth_context: AuthContext,
     ):
         self.product_repo = product_repo
         self.category_repo = category_repo
-        self.auth_context = auth_context
-
-    def authenticate(self, token: str) -> bool:
-        return self.auth_context.authenticate(token)
 
     def get_all_products(self) -> list:
         return [p.to_dict() for p in self.product_repo.get_all()]
@@ -52,12 +46,8 @@ class ProductService:
 
 
 class CategoryService:
-    def __init__(self, category_repo: ICategoryRepository, auth_context: AuthContext):
+    def __init__(self, category_repo: ICategoryRepository):
         self.category_repo = category_repo
-        self.auth_context = auth_context
-
-    def authenticate(self, token: str) -> bool:
-        return self.auth_context.authenticate(token)
 
     def get_all_categories(self) -> list:
         return [c.to_dict() for c in self.category_repo.get_all()]
@@ -89,12 +79,8 @@ class CategoryService:
 
 
 class FavoriteService:
-    def __init__(self, favorite_repo: IFavoriteRepository, auth_context: AuthContext):
+    def __init__(self, favorite_repo: IFavoriteRepository):
         self.favorite_repo = favorite_repo
-        self.auth_context = auth_context
-
-    def authenticate(self, token: str) -> bool:
-        return self.auth_context.authenticate(token)
 
     def get_all_favorites(self) -> list:
         return [f.to_dict() for f in self.favorite_repo.get_all()]

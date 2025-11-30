@@ -31,13 +31,10 @@ class Container(containers.DeclarativeContainer):
         ProductService,
         product_repo=product_repo,
         category_repo=category_repo,
-        auth_context=auth_context,
     )
 
-    category_service = providers.Factory(
-        CategoryService, category_repo=category_repo, auth_context=auth_context
-    )
+    category_service = providers.Factory(CategoryService, category_repo=category_repo)
 
     favorite_service = providers.Factory(
-        FavoriteService, favorite_repo=favorite_repo, auth_context=auth_context
+        FavoriteService, favorite_repo=favorite_repo
     )

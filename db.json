@@ -131,6 +131,12 @@
             "name": "nameProduct",
             "category": "nameCategory",
             "price": 9.0
+        },
+        {
+            "id": 23,
+            "name": "nameProduct",
+            "category": "nameCategory",
+            "price": 9
         }
     ],
     "categories": [
