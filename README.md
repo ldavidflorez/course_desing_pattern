@@ -1,3 +1,11 @@
+# Proyecto de Refactorización de API REST
+
+**Universidad Tecnológica de Bolívar**  
+**Hacia un código más legible y mantenible en el tiempo**  
+**Curso: Patrones de Diseño de Software**  
+**Estudiante: Luis David Flórez Pareja**  
+**Noviembre de 2025**
+
 # Descripción
 
 > **Nota importante:** El código original con malas prácticas de codificación está disponible en la rama `main`. Esta rama `refactor` contiene la versión mejorada aplicando patrones de diseño y principios SOLID.
