@@ -1,4 +1,8 @@
-from repositories.interfaces import IProductRepository, ICategoryRepository, IFavoriteRepository
+from repositories.interfaces import (
+    IProductRepository,
+    ICategoryRepository,
+    IFavoriteRepository,
+)
 from models.product import Product, ProductBuilder
 from models.category import Category, CategoryBuilder
 from models.favorite import Favorite, FavoriteBuilder
@@ -6,7 +10,12 @@ from strategies.auth_context import AuthContext
 
 
 class ProductService:
-    def __init__(self, product_repo: IProductRepository, category_repo: ICategoryRepository, auth_context: AuthContext):
+    def __init__(
+        self,
+        product_repo: IProductRepository,
+        category_repo: ICategoryRepository,
+        auth_context: AuthContext,
+    ):
         self.product_repo = product_repo
         self.category_repo = category_repo
         self.auth_context = auth_context
@@ -31,7 +40,13 @@ class ProductService:
         if not any(cat.name.lower() == category.lower() for cat in categories):
             return {"message": "Category does not exist"}, 400
 
-        product = ProductBuilder().set_name(name).set_category(category).set_price(price).build()
+        product = (
+            ProductBuilder()
+            .set_name(name)
+            .set_category(category)
+            .set_price(price)
+            .build()
+        )
         self.product_repo.add(product)
         return {"message": "Product added", "product": product.to_dict()}, 201
 
@@ -85,13 +100,20 @@ class FavoriteService:
         return [f.to_dict() for f in self.favorite_repo.get_all()]
 
     def add_favorite(self, user_id: int, product_id: int):
-        favorite = FavoriteBuilder().set_user_id(user_id).set_product_id(product_id).build()
+        favorite = (
+            FavoriteBuilder().set_user_id(user_id).set_product_id(product_id).build()
+        )
         self.favorite_repo.add(favorite)
-        return {"message": "Product added to favorites", "favorite": favorite.to_dict()}, 201
+        return {
+            "message": "Product added to favorites",
+            "favorite": favorite.to_dict(),
+        }, 201
 
     def remove_favorite(self, user_id: int, product_id: int):
         favorites = self.favorite_repo.get_all()
-        if not any(f.user_id == user_id and f.product_id == product_id for f in favorites):
+        if not any(
+            f.user_id == user_id and f.product_id == product_id for f in favorites
+        ):
             return {"message": "Favorite not found"}, 404
 
         self.favorite_repo.remove(user_id, product_id)

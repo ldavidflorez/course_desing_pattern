@@ -3,9 +3,10 @@ from dependency_injector.wiring import inject, Provide
 from strategies.auth_strategies import TokenAuthStrategy
 from di_container import Container
 
-auth_bp = Blueprint('auth', __name__)
+auth_bp = Blueprint("auth", __name__)
 
-@auth_bp.route('/auth', methods=['POST'])
+
+@auth_bp.route("/auth", methods=["POST"])
 @inject
 def login(auth_strategy: TokenAuthStrategy = Provide[Container.auth_strategy]):
     data = request.get_json()

@@ -3,20 +3,26 @@ from dependency_injector.wiring import inject, Provide
 from services.services import FavoriteService
 from di_container import Container
 
-favorites_bp = Blueprint('favorites', __name__)
+favorites_bp = Blueprint("favorites", __name__)
 
-@favorites_bp.route('/favorites', methods=['GET'])
+
+@favorites_bp.route("/favorites", methods=["GET"])
 @inject
-def get_favorites(favorite_service: FavoriteService = Provide[Container.favorite_service]):
+def get_favorites(
+    favorite_service: FavoriteService = Provide[Container.favorite_service],
+):
     token = request.headers.get("Authorization")
     if not favorite_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
 
     return jsonify(favorite_service.get_all_favorites())
 
-@favorites_bp.route('/favorites', methods=['POST'])
+
+@favorites_bp.route("/favorites", methods=["POST"])
 @inject
-def add_favorite(favorite_service: FavoriteService = Provide[Container.favorite_service]):
+def add_favorite(
+    favorite_service: FavoriteService = Provide[Container.favorite_service],
+):
     token = request.headers.get("Authorization")
     if not favorite_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -33,9 +39,12 @@ def add_favorite(favorite_service: FavoriteService = Provide[Container.favorite_
         return jsonify(result[0]), result[1]
     return jsonify(result[0]), result[1]
 
-@favorites_bp.route('/favorites', methods=['DELETE'])
+
+@favorites_bp.route("/favorites", methods=["DELETE"])
 @inject
-def remove_favorite(favorite_service: FavoriteService = Provide[Container.favorite_service]):
+def remove_favorite(
+    favorite_service: FavoriteService = Provide[Container.favorite_service],
+):
     token = request.headers.get("Authorization")
     if not favorite_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401

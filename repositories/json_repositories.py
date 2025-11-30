@@ -1,6 +1,10 @@
 import json
 from typing import List
-from repositories.interfaces import IProductRepository, ICategoryRepository, IFavoriteRepository
+from repositories.interfaces import (
+    IProductRepository,
+    ICategoryRepository,
+    IFavoriteRepository,
+)
 from models.product import Product
 from models.category import Category
 from models.favorite import Favorite
@@ -32,7 +36,11 @@ class JsonProductRepository(IProductRepository):
         raise ValueError("Product not found")
 
     def get_by_category(self, category: str) -> List[Product]:
-        return [Product.from_dict(p) for p in self.data.get("products", []) if p["category"].lower() == category.lower()]
+        return [
+            Product.from_dict(p)
+            for p in self.data.get("products", [])
+            if p["category"].lower() == category.lower()
+        ]
 
     def add(self, product: Product) -> None:
         products = self.data.get("products", [])
@@ -114,5 +122,9 @@ class JsonFavoriteRepository(IFavoriteRepository):
 
     def remove(self, user_id: int, product_id: int) -> None:
         favorites = self.data.get("favorites", [])
-        self.data["favorites"] = [f for f in favorites if not (f["user_id"] == user_id and f["product_id"] == product_id)]
+        self.data["favorites"] = [
+            f
+            for f in favorites
+            if not (f["user_id"] == user_id and f["product_id"] == product_id)
+        ]
         self._save_data()

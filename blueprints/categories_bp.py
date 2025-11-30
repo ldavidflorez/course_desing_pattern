@@ -3,20 +3,26 @@ from dependency_injector.wiring import inject, Provide
 from services.services import CategoryService
 from di_container import Container
 
-categories_bp = Blueprint('categories', __name__)
+categories_bp = Blueprint("categories", __name__)
 
-@categories_bp.route('/categories', methods=['GET'])
+
+@categories_bp.route("/categories", methods=["GET"])
 @inject
-def get_categories(category_service: CategoryService = Provide[Container.category_service]):
+def get_categories(
+    category_service: CategoryService = Provide[Container.category_service],
+):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
 
     return jsonify(category_service.get_all_categories())
 
-@categories_bp.route('/categories/<int:category_id>', methods=['GET'])
+
+@categories_bp.route("/categories/<int:category_id>", methods=["GET"])
 @inject
-def get_category(category_id, category_service: CategoryService = Provide[Container.category_service]):
+def get_category(
+    category_id, category_service: CategoryService = Provide[Container.category_service]
+):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -26,9 +32,12 @@ def get_category(category_id, category_service: CategoryService = Provide[Contai
         return jsonify(result[0]), result[1]
     return jsonify(result)
 
-@categories_bp.route('/categories', methods=['POST'])
+
+@categories_bp.route("/categories", methods=["POST"])
 @inject
-def create_category(category_service: CategoryService = Provide[Container.category_service]):
+def create_category(
+    category_service: CategoryService = Provide[Container.category_service],
+):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -44,9 +53,12 @@ def create_category(category_service: CategoryService = Provide[Container.catego
         return jsonify(result[0]), result[1]
     return jsonify(result[0]), result[1]
 
-@categories_bp.route('/categories', methods=['DELETE'])
+
+@categories_bp.route("/categories", methods=["DELETE"])
 @inject
-def delete_category(category_service: CategoryService = Provide[Container.category_service]):
+def delete_category(
+    category_service: CategoryService = Provide[Container.category_service],
+):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401

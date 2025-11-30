@@ -4,17 +4,11 @@ class Favorite:
         self.product_id = product_id
 
     def to_dict(self):
-        return {
-            "user_id": self.user_id,
-            "product_id": self.product_id
-        }
+        return {"user_id": self.user_id, "product_id": self.product_id}
 
     @classmethod
     def from_dict(cls, data):
-        return cls(
-            user_id=data["user_id"],
-            product_id=data["product_id"]
-        )
+        return cls(user_id=data["user_id"], product_id=data["product_id"])
 
 
 class FavoriteBuilder:

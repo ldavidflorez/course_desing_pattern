@@ -3,9 +3,10 @@ from dependency_injector.wiring import inject, Provide
 from services.services import ProductService
 from di_container import Container
 
-products_bp = Blueprint('products', __name__)
+products_bp = Blueprint("products", __name__)
 
-@products_bp.route('/products', methods=['GET'])
+
+@products_bp.route("/products", methods=["GET"])
 @inject
 def get_products(product_service: ProductService = Provide[Container.product_service]):
     token = request.headers.get("Authorization")
@@ -18,9 +19,12 @@ def get_products(product_service: ProductService = Provide[Container.product_ser
 
     return jsonify(product_service.get_all_products())
 
-@products_bp.route('/products/<int:product_id>', methods=['GET'])
+
+@products_bp.route("/products/<int:product_id>", methods=["GET"])
 @inject
-def get_product(product_id, product_service: ProductService = Provide[Container.product_service]):
+def get_product(
+    product_id, product_service: ProductService = Provide[Container.product_service]
+):
     token = request.headers.get("Authorization")
     if not product_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -30,9 +34,12 @@ def get_product(product_id, product_service: ProductService = Provide[Container.
         return jsonify(result[0]), result[1]
     return jsonify(result)
 
-@products_bp.route('/products', methods=['POST'])
+
+@products_bp.route("/products", methods=["POST"])
 @inject
-def create_product(product_service: ProductService = Provide[Container.product_service]):
+def create_product(
+    product_service: ProductService = Provide[Container.product_service],
+):
     token = request.headers.get("Authorization")
     if not product_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401

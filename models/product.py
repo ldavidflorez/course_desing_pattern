@@ -10,7 +10,7 @@ class Product:
             "id": self.id,
             "name": self.name,
             "category": self.category,
-            "price": self.price
+            "price": self.price,
         }
 
     @classmethod
@@ -19,7 +19,7 @@ class Product:
             id=data["id"],
             name=data["name"],
             category=data["category"],
-            price=data["price"]
+            price=data["price"],
         )
 
 

@@ -4,17 +4,11 @@ class Category:
         self.name = name
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name
-        }
+        return {"id": self.id, "name": self.name}
 
     @classmethod
     def from_dict(cls, data):
-        return cls(
-            id=data["id"],
-            name=data["name"]
-        )
+        return cls(id=data["id"], name=data["name"])
 
 
 class CategoryBuilder:
