@@ -2,9 +2,9 @@
 
 > **Nota importante:** El código original con malas prácticas de codificación está disponible en la rama `main`. Esta rama `refactor` contiene la versión mejorada aplicando patrones de diseño y principios SOLID.
 
-A continuación se presenta una implementación simple de una API REST con malas prácticas de codificación y sin diseño de software. Intenta mejorar este código aplicando todo lo que has aprendido sobre patrones de diseño de software, código limpio y principios SOLID.
+A continuación se presenta una comparación entre una implementación original de una API REST con malas prácticas de codificación y sin diseño de software, y su versión refactorizada. La implementación original (disponible en la rama `main`) sirve como base para aplicar mejoras utilizando patrones de diseño de software, código limpio y principios SOLID.
 
-Esta versión ha sido refactorizada aplicando patrones de diseño como Builder, Repository, Strategy, Service Layer, Dependency Injection, Decorator y Blueprints, mejorando la mantenibilidad, testabilidad y extensibilidad.
+Esta versión (rama `refactor`) ha sido mejorada aplicando patrones de diseño como Builder, Repository, Strategy, Service Layer, Dependency Injection, Decorator y Blueprints, mejorando la mantenibilidad, testabilidad y extensibilidad.
 
 ## Arquitectura
 
@@ -41,14 +41,14 @@ Para más detalles sobre los cambios aplicados, incluyendo análisis de code sme
    pip install -r requirements.txt
    ```
 
-8. **Descarga Insomnia** desde [Sitio de Insomnia](https://insomnia.rest/download) o Postman.
+8. **Descarga Postman** desde [Sitio de Postman](https://www.postman.com/downloads/).
 
 9. **Ejecuta** la aplicación Flask con este comando:
    ```
    python app.py
    ```
 
-10. **Usa Insomnia** o Postman para hacer solicitudes a la URL proporcionada por la aplicación Python.
+10. **Usa Postman** para hacer solicitudes a la URL proporcionada por la aplicación Python.
 
 ## Cómo Ejecutar con Docker (Alternativa)
 
@@ -64,9 +64,7 @@ Si prefieres usar Docker para ejecutar la aplicación de manera aislada y reprod
    ```
    Este comando construirá la imagen Docker, detendrá cualquier contenedor anterior, y ejecutará un nuevo contenedor con la aplicación corriendo en `http://localhost:5000`. Los datos de la base de datos se persisten en la carpeta `data/` del host.
 
-4. **Usa Insomnia** o Postman para hacer solicitudes a `http://localhost:5000`.
-
-Nota: El script `build.sh` también incluye comandos para verificar logs y detener el contenedor.
+4. **Usa Postman** para hacer solicitudes a `http://localhost:5000`.
 
 # Endpoints
 
