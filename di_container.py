@@ -14,12 +14,12 @@ class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(packages=["blueprints"])
 
     # Repositories
-    product_repo = providers.Singleton(JsonProductRepository, json_file_path="db.json")
+    product_repo = providers.Singleton(JsonProductRepository, json_file_path="data/db.json")
     category_repo = providers.Singleton(
-        JsonCategoryRepository, json_file_path="db.json"
+        JsonCategoryRepository, json_file_path="data/db.json"
     )
     favorite_repo = providers.Singleton(
-        JsonFavoriteRepository, json_file_path="db.json"
+        JsonFavoriteRepository, json_file_path="data/db.json"
     )
 
     # Strategies
