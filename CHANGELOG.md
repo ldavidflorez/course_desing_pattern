@@ -20,6 +20,13 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **Architecture Diagram**: Updated `refactored_architecture.puml` to reflect AuthContext usage and DI Container implementation.
 
+### Added
+- **Authentication Decorator**: Implemented `@token_required` decorator in `auth_decorators.py` for centralized token validation using DI.
+
+### Removed
+- **Service Authentication**: Eliminated `authenticate` methods from all services (ProductService, CategoryService, FavoriteService) as authentication is now handled at the blueprint level.
+- **Manual Auth Checks**: Removed repetitive token validation code from all blueprint routes, replaced with `@token_required` decorator.
+
 ## [Refactor] - 2025-11-29
 
 
