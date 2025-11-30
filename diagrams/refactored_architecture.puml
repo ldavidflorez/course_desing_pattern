@@ -94,7 +94,12 @@ package Strategies {
         +authenticate()
     }
 
+    class AuthContext {
+        +authenticate()
+    }
+
     TokenAuthStrategy ..|> IAuthStrategy
+    AuthContext --> IAuthStrategy : usa
 }
 
 package Services {
@@ -123,13 +128,13 @@ package Services {
 
     ProductService --> IProductRepository : inyecta
     ProductService --> ICategoryRepository : inyecta
-    ProductService --> IAuthStrategy : inyecta
+    ProductService --> AuthContext : inyecta
 
     CategoryService --> ICategoryRepository : inyecta
-    CategoryService --> IAuthStrategy : inyecta
+    CategoryService --> AuthContext : inyecta
 
     FavoriteService --> IFavoriteRepository : inyecta
-    FavoriteService --> IAuthStrategy : inyecta
+    FavoriteService --> AuthContext : inyecta
 }
 
 package Blueprints {
@@ -166,10 +171,30 @@ class App {
     +run()
 }
 
+class DIContainer {
+    +product_repo
+    +category_repo
+    +favorite_repo
+    +auth_context
+    +product_service
+    +category_service
+    +favorite_service
+    +wire()
+}
+
+App --> DIContainer : inicializa
+DIContainer --> IProductRepository : provee
+DIContainer --> ICategoryRepository : provee
+DIContainer --> IFavoriteRepository : provee
+DIContainer --> AuthContext : provee
+DIContainer --> ProductService : provee
+DIContainer --> CategoryService : provee
+DIContainer --> FavoriteService : provee
+
 App --> ProductsBlueprint : registra
 App --> CategoriesBlueprint : registra
 App --> FavoritesBlueprint : registra
 App --> AuthBlueprint : registra
 
-note right of App : Arquitectura limpia\nCapas separadas\nInyección de dependencias
+note right of App : Arquitectura limpia\nCapas separadas\nInyección de dependencias\ncon Contenedor DI
 @enduml
