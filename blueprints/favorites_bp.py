@@ -1,16 +1,13 @@
 from flask import Blueprint, request, jsonify
+from dependency_injector.wiring import inject, Provide
 from services.services import FavoriteService
-from repositories.json_repositories import JsonFavoriteRepository
-from strategies.auth_strategies import TokenAuthStrategy
+from di_container import Container
 
 favorites_bp = Blueprint('favorites', __name__)
 
-favorite_repo = JsonFavoriteRepository("db.json")
-auth_strategy = TokenAuthStrategy()
-favorite_service = FavoriteService(favorite_repo, auth_strategy)
-
 @favorites_bp.route('/favorites', methods=['GET'])
-def get_favorites():
+@inject
+def get_favorites(favorite_service: FavoriteService = Provide[Container.favorite_service]):
     token = request.headers.get("Authorization")
     if not favorite_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -18,7 +15,8 @@ def get_favorites():
     return jsonify(favorite_service.get_all_favorites())
 
 @favorites_bp.route('/favorites', methods=['POST'])
-def add_favorite():
+@inject
+def add_favorite(favorite_service: FavoriteService = Provide[Container.favorite_service]):
     token = request.headers.get("Authorization")
     if not favorite_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -36,7 +34,8 @@ def add_favorite():
     return jsonify(result[0]), result[1]
 
 @favorites_bp.route('/favorites', methods=['DELETE'])
-def remove_favorite():
+@inject
+def remove_favorite(favorite_service: FavoriteService = Provide[Container.favorite_service]):
     token = request.headers.get("Authorization")
     if not favorite_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401

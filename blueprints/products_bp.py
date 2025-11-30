@@ -1,18 +1,13 @@
 from flask import Blueprint, request, jsonify
+from dependency_injector.wiring import inject, Provide
 from services.services import ProductService
-from repositories.json_repositories import JsonProductRepository, JsonCategoryRepository
-from strategies.auth_strategies import TokenAuthStrategy
+from di_container import Container
 
 products_bp = Blueprint('products', __name__)
 
-# Dependency Injection setup (simple, could use a DI container)
-product_repo = JsonProductRepository("db.json")
-category_repo = JsonCategoryRepository("db.json")
-auth_strategy = TokenAuthStrategy()
-product_service = ProductService(product_repo, category_repo, auth_strategy)
-
 @products_bp.route('/products', methods=['GET'])
-def get_products():
+@inject
+def get_products(product_service: ProductService = Provide[Container.product_service]):
     token = request.headers.get("Authorization")
     if not product_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -24,7 +19,8 @@ def get_products():
     return jsonify(product_service.get_all_products())
 
 @products_bp.route('/products/<int:product_id>', methods=['GET'])
-def get_product(product_id):
+@inject
+def get_product(product_id, product_service: ProductService = Provide[Container.product_service]):
     token = request.headers.get("Authorization")
     if not product_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -35,7 +31,8 @@ def get_product(product_id):
     return jsonify(result)
 
 @products_bp.route('/products', methods=['POST'])
-def create_product():
+@inject
+def create_product(product_service: ProductService = Provide[Container.product_service]):
     token = request.headers.get("Authorization")
     if not product_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401

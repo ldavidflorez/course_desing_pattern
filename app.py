@@ -3,8 +3,13 @@ from blueprints.auth_bp import auth_bp
 from blueprints.products_bp import products_bp
 from blueprints.categories_bp import categories_bp
 from blueprints.favorites_bp import favorites_bp
+from di_container import Container
 
 app = Flask(__name__)
+
+# Initialize DI container
+container = Container()
+container.wire()
 
 # Register blueprints
 app.register_blueprint(auth_bp)

@@ -1,16 +1,13 @@
 from flask import Blueprint, request, jsonify
+from dependency_injector.wiring import inject, Provide
 from services.services import CategoryService
-from repositories.json_repositories import JsonCategoryRepository
-from strategies.auth_strategies import TokenAuthStrategy
+from di_container import Container
 
 categories_bp = Blueprint('categories', __name__)
 
-category_repo = JsonCategoryRepository("db.json")
-auth_strategy = TokenAuthStrategy()
-category_service = CategoryService(category_repo, auth_strategy)
-
 @categories_bp.route('/categories', methods=['GET'])
-def get_categories():
+@inject
+def get_categories(category_service: CategoryService = Provide[Container.category_service]):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -18,7 +15,8 @@ def get_categories():
     return jsonify(category_service.get_all_categories())
 
 @categories_bp.route('/categories/<int:category_id>', methods=['GET'])
-def get_category(category_id):
+@inject
+def get_category(category_id, category_service: CategoryService = Provide[Container.category_service]):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -29,7 +27,8 @@ def get_category(category_id):
     return jsonify(result)
 
 @categories_bp.route('/categories', methods=['POST'])
-def create_category():
+@inject
+def create_category(category_service: CategoryService = Provide[Container.category_service]):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
@@ -46,7 +45,8 @@ def create_category():
     return jsonify(result[0]), result[1]
 
 @categories_bp.route('/categories', methods=['DELETE'])
-def delete_category():
+@inject
+def delete_category(category_service: CategoryService = Provide[Container.category_service]):
     token = request.headers.get("Authorization")
     if not category_service.authenticate(token):
         return jsonify({"message": "Unauthorized invalid token"}), 401
