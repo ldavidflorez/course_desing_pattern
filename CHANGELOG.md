@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [DI Enhancement] - 2025-11-29
+
+### Added
+- **Professional DI Container**: Implemented `dependency_injector` library for advanced dependency injection management.
+- **AuthContext**: Created `AuthContext` class to encapsulate authentication strategy usage, following Strategy pattern properly.
+- **DI Container**: Added `di_container.py` with providers for repositories, strategies, services, and wiring configuration.
+
+### Changed
+- **Services**: Updated all services (`ProductService`, `CategoryService`, `FavoriteService`) to inject `AuthContext` instead of `IAuthStrategy` directly.
+- **Blueprints**: Migrated all blueprints (`products_bp`, `categories_bp`, `favorites_bp`) to use `@inject` decorator with `Provide[Container.*]` for automatic dependency resolution.
+- **App Initialization**: Modified `app.py` to initialize and wire the DI container on startup.
+
+### Removed
+- **Manual DI**: Eliminated manual dependency instantiation in blueprints, replaced with container-based injection.
+
+### Changed
+- **Architecture Diagram**: Updated `refactored_architecture.puml` to reflect AuthContext usage and DI Container implementation.
+
+## [Refactor] - 2025-11-29
+
 
 ### Fixed
 - **Token Validation**: Corrected token mismatch in authentication endpoints (products, categories, favorites). Changed validation from "abcd1234" to "abcd12345" to match auth response.
