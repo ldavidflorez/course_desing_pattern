@@ -104,7 +104,6 @@ package Strategies {
 
 package Services {
     class ProductService {
-        +authenticate()
         +get_all_products()
         +get_product_by_id()
         +get_products_by_category()
@@ -112,7 +111,6 @@ package Services {
     }
 
     class CategoryService {
-        +authenticate()
         +get_all_categories()
         +get_category_by_id()
         +create_category()
@@ -120,7 +118,6 @@ package Services {
     }
 
     class FavoriteService {
-        +authenticate()
         +get_all_favorites()
         +add_favorite()
         +remove_favorite()
@@ -128,16 +125,17 @@ package Services {
 
     ProductService --> IProductRepository : inyecta
     ProductService --> ICategoryRepository : inyecta
-    ProductService --> AuthContext : inyecta
 
     CategoryService --> ICategoryRepository : inyecta
-    CategoryService --> AuthContext : inyecta
 
     FavoriteService --> IFavoriteRepository : inyecta
-    FavoriteService --> AuthContext : inyecta
 }
 
 package Blueprints {
+    class AuthDecorator {
+        +token_required()
+    }
+
     class ProductsBlueprint {
         +GET /products
         +GET /products/<id>
@@ -160,6 +158,11 @@ package Blueprints {
     class AuthBlueprint {
         +POST /auth
     }
+
+    AuthDecorator --> AuthContext : usa
+    ProductsBlueprint --> AuthDecorator : decorado
+    CategoriesBlueprint --> AuthDecorator : decorado
+    FavoritesBlueprint --> AuthDecorator : decorado
 
     ProductsBlueprint --> ProductService : usa
     CategoriesBlueprint --> CategoryService : usa
@@ -196,5 +199,5 @@ App --> CategoriesBlueprint : registra
 App --> FavoritesBlueprint : registra
 App --> AuthBlueprint : registra
 
-note right of App : Arquitectura limpia\nCapas separadas\nInyección de dependencias\ncon Contenedor DI
+note right of App : Arquitectura limpia\nCapas separadas\nInyección de dependencias\ncon Contenedor DI\ny Decorador de Auth
 @enduml
