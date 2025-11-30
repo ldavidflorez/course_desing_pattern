@@ -27,6 +27,9 @@ All notable changes to this project will be documented in this file.
 - **Service Authentication**: Eliminated `authenticate` methods from all services (ProductService, CategoryService, FavoriteService) as authentication is now handled at the blueprint level.
 - **Manual Auth Checks**: Removed repetitive token validation code from all blueprint routes, replaced with `@token_required` decorator.
 
+### Changed
+- **Architecture Diagram**: Updated `refactored_architecture.puml` to remove `authenticate()` methods from services, remove AuthContext injection from services, and add AuthDecorator class.
+
 ## [Refactor] - 2025-11-29
 
 
