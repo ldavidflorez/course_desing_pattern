@@ -1,5 +1,5 @@
 @startuml Refactored Architecture
-title Arquitectura Refactorizada (Patrones de Diseño)
+title Refactored Architecture (Design Patterns)
 
 package Models {
     class Product {
@@ -32,8 +32,22 @@ package Models {
         +build()
     }
 
-    ProductBuilder --> Product : construye
+    class CategoryBuilder {
+        +set_name()
+        +build()
+    }
+
+    class FavoriteBuilder {
+        +set_user_id()
+        +set_product_id()
+        +build()
+    }
+
+    ProductBuilder --> Product : builds
+    CategoryBuilder --> Category : builds
+    FavoriteBuilder --> Favorite : builds
 }
+note left of Models : Builder Pattern\nConstructores fluidos para objetos
 
 package Repositories {
     interface IProductRepository {
@@ -84,6 +98,7 @@ package Repositories {
     JsonCategoryRepository ..|> ICategoryRepository
     JsonFavoriteRepository ..|> IFavoriteRepository
 }
+note left of Repositories : Repository Pattern\nAbstracción de acceso a datos
 
 package Strategies {
     interface IAuthStrategy {
@@ -99,8 +114,9 @@ package Strategies {
     }
 
     TokenAuthStrategy ..|> IAuthStrategy
-    AuthContext --> IAuthStrategy : usa
+    AuthContext --> IAuthStrategy : uses
 }
+note left of Strategies : Strategy Pattern\nAutenticación intercambiable
 
 package Services {
     class ProductService {
@@ -123,13 +139,14 @@ package Services {
         +remove_favorite()
     }
 
-    ProductService --> IProductRepository : inyecta
-    ProductService --> ICategoryRepository : inyecta
+    ProductService --> IProductRepository : uses
+    ProductService --> ICategoryRepository : uses
 
-    CategoryService --> ICategoryRepository : inyecta
+    CategoryService --> ICategoryRepository : uses
 
-    FavoriteService --> IFavoriteRepository : inyecta
+    FavoriteService --> IFavoriteRepository : uses
 }
+note left of Services : Service Layer Pattern\nLógica de negocio separada
 
 package Blueprints {
     class AuthDecorator {
@@ -137,38 +154,39 @@ package Blueprints {
     }
 
     class ProductsBlueprint {
-        +GET /products
-        +GET /products/<id>
-        +POST /products
+        +get_products()
+        +get_product()
+        +create_product()
     }
 
     class CategoriesBlueprint {
-        +GET /categories
-        +GET /categories/<id>
-        +POST /categories
-        +DELETE /categories
+        +get_categories()
+        +get_category()
+        +create_category()
+        +delete_category()
     }
 
     class FavoritesBlueprint {
-        +GET /favorites
-        +POST /favorites
-        +DELETE /favorites
+        +get_favorites()
+        +add_favorite()
+        +remove_favorite()
     }
 
     class AuthBlueprint {
-        +POST /auth
+        +login()
     }
 
-    AuthDecorator --> AuthContext : usa
-    ProductsBlueprint --> AuthDecorator : decorado
-    CategoriesBlueprint --> AuthDecorator : decorado
-    FavoritesBlueprint --> AuthDecorator : decorado
+    AuthDecorator --> AuthContext : uses
+    ProductsBlueprint --> AuthDecorator : decorated
+    CategoriesBlueprint --> AuthDecorator : decorated
+    FavoritesBlueprint --> AuthDecorator : decorated
 
-    ProductsBlueprint --> ProductService : usa
-    CategoriesBlueprint --> CategoryService : usa
-    FavoritesBlueprint --> FavoriteService : usa
-    AuthBlueprint --> IAuthStrategy : usa
+    ProductsBlueprint --> ProductService : injects
+    CategoriesBlueprint --> CategoryService : injects
+    FavoritesBlueprint --> FavoriteService : injects
+    AuthBlueprint --> IAuthStrategy : uses
 }
+note left of Blueprints : Decorator Pattern\nEnrutamiento modular con autenticación decorada
 
 class App {
     +run()
@@ -184,20 +202,20 @@ class DIContainer {
     +favorite_service
     +wire()
 }
+note left of DIContainer : Dependency Injection Container\nGestión de dependencias\n(Singleton + Factory Method)
 
-App --> DIContainer : inicializa
-DIContainer --> IProductRepository : provee
-DIContainer --> ICategoryRepository : provee
-DIContainer --> IFavoriteRepository : provee
-DIContainer --> AuthContext : provee
-DIContainer --> ProductService : provee
-DIContainer --> CategoryService : provee
-DIContainer --> FavoriteService : provee
+App --> DIContainer : initializes
+DIContainer --> IProductRepository : creates
+DIContainer --> ICategoryRepository : creates
+DIContainer --> IFavoriteRepository : creates
+DIContainer --> AuthContext : creates
+DIContainer --> ProductService : provides
+DIContainer --> CategoryService : provides
+DIContainer --> FavoriteService : provides
 
-App --> ProductsBlueprint : registra
-App --> CategoriesBlueprint : registra
-App --> FavoritesBlueprint : registra
-App --> AuthBlueprint : registra
+App --> ProductsBlueprint : registers
+App --> CategoriesBlueprint : registers
+App --> FavoritesBlueprint : registers
+App --> AuthBlueprint : registers
 
-note right of App : Arquitectura limpia\nCapas separadas\nInyección de dependencias\ncon Contenedor DI\ny Decorador de Auth
 @enduml
