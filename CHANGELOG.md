@@ -1,78 +1,77 @@
-# Changelog
+# Registro de Cambios
 
-All notable changes to this project will be documented in this file.
+Todos los cambios notables en este proyecto se documentarán en este archivo.
 
-## [DI Enhancement] - 2025-11-29
+## [Mejora DI] - 2025-11-29
 
-### Added
-- **Professional DI Container**: Implemented `dependency_injector` library for advanced dependency injection management.
-- **AuthContext**: Created `AuthContext` class to encapsulate authentication strategy usage, following Strategy pattern properly.
-- **DI Container**: Added `di_container.py` with providers for repositories, strategies, services, and wiring configuration.
+### Agregado
+- **Contenedor DI Profesional**: Implementada la biblioteca `dependency_injector` para gestión avanzada de inyección de dependencias.
+- **AuthContext**: Creada la clase `AuthContext` para encapsular el uso de estrategias de autenticación, siguiendo correctamente el patrón Strategy.
+- **Contenedor DI**: Agregado `di_container.py` con proveedores para repositorios, estrategias, servicios y configuración de cableado.
 
-### Changed
-- **Services**: Updated all services (`ProductService`, `CategoryService`, `FavoriteService`) to inject `AuthContext` instead of `IAuthStrategy` directly.
-- **Blueprints**: Migrated all blueprints (`products_bp`, `categories_bp`, `favorites_bp`) to use `@inject` decorator with `Provide[Container.*]` for automatic dependency resolution.
-- **App Initialization**: Modified `app.py` to initialize and wire the DI container on startup.
+### Cambiado
+- **Servicios**: Actualizados todos los servicios (`ProductService`, `CategoryService`, `FavoriteService`) para inyectar `AuthContext` en lugar de `IAuthStrategy` directamente.
+- **Blueprints**: Migrados todos los blueprints (`products_bp`, `categories_bp`, `favorites_bp`) para usar el decorador `@inject` con `Provide[Container.*]` para resolución automática de dependencias.
+- **Inicialización de App**: Modificado `app.py` para inicializar y cablear el contenedor DI al inicio.
 
-### Removed
-- **Manual DI**: Eliminated manual dependency instantiation in blueprints, replaced with container-based injection.
+### Removido
+- **DI Manual**: Eliminada la instanciación manual de dependencias en blueprints, reemplazada con inyección basada en contenedor.
 
-### Changed
-- **Architecture Diagram**: Updated `refactored_architecture.puml` to reflect AuthContext usage and DI Container implementation.
+### Cambiado
+- **Diagrama de Arquitectura**: Actualizado `refactored_architecture.puml` para reflejar el uso de AuthContext y la implementación del Contenedor DI.
 
-### Added
-- **Authentication Decorator**: Implemented `@token_required` decorator in `auth_decorators.py` for centralized token validation using DI.
+### Agregado
+- **Decorador de Autenticación**: Implementado el decorador `@token_required` en `auth_decorators.py` para validación centralizada de tokens usando DI.
 
-### Removed
-- **Service Authentication**: Eliminated `authenticate` methods from all services (ProductService, CategoryService, FavoriteService) as authentication is now handled at the blueprint level.
-- **Manual Auth Checks**: Removed repetitive token validation code from all blueprint routes, replaced with `@token_required` decorator.
+### Removido
+- **Autenticación en Servicios**: Eliminados los métodos `authenticate` de todos los servicios (ProductService, CategoryService, FavoriteService) ya que la autenticación ahora se maneja a nivel de blueprint.
+- **Verificaciones de Auth Manuales**: Removido código repetitivo de validación de tokens de todas las rutas de blueprints, reemplazado con el decorador `@token_required`.
 
-### Changed
-- **Architecture Diagram**: Updated `refactored_architecture.puml` to remove `authenticate()` methods from services, remove AuthContext injection from services, and add AuthDecorator class.
+### Cambiado
+- **Diagrama de Arquitectura**: Actualizado `refactored_architecture.puml` para remover métodos `authenticate()` de servicios, remover inyección de AuthContext de servicios y agregar clase AuthDecorator.
 
-## [Refactor] - 2025-11-29
+## [Refactor] - 2025-11-28
 
+### Agregado
+- **Modelos con Patrón Builder**: Creados modelos `Product`, `Category` y `Favorite` con patrón Builder para construcción fluida de objetos.
+- **Patrón Repository**: Implementadas interfaces (`IProductRepository`, etc.) e implementaciones basadas en JSON para abstracción de persistencia de datos.
+- **Patrón Strategy para Auth**: Agregada interfaz `IAuthStrategy` y `TokenAuthStrategy` para eliminar duplicación de auth.
+- **Capa de Servicio**: Introducidos `ProductService`, `CategoryService` y `FavoriteService` para separar lógica de negocio de controladores.
+- **Blueprints para Enrutamiento**: Modularizados rutas usando Flask Blueprints (`auth_bp`, `products_bp`, etc.) para mejor organización.
+- **Inyección de Dependencias**: Configuración simple de DI en blueprints para repositorios y servicios.
 
-### Fixed
-- **Token Validation**: Corrected token mismatch in authentication endpoints (products, categories, favorites). Changed validation from "abcd1234" to "abcd12345" to match auth response.
-- **Duplication in Favorites**: Fixed duplication when adding favorites by replacing `add_favorite` with `save_favorites` in POST method.
-- **Duplication in Categories**: Fixed duplication when creating/deleting categories by adding `save_categories` method and updating POST/DELETE methods.
-- **Duplication in Products**: Fixed duplication when creating products by adding `save_products` method and updating POST method.
-- **Category Validation**: Added validation in product creation to ensure the category exists before adding the product.
-- **Favorites Deletion**: Added check in DELETE favorites to return 404 if favorite not found, instead of always 200.
-- **Categories Parsing**: Removed duplicate argument parsing in DELETE categories method.
-- **Categories Existence Check**: Fixed category existence check in POST categories to properly verify if name exists.
-- **Categories Deletion Filter**: Corrected filter in DELETE categories to use category name instead of object.
+### Cambiado
+- **Estructura de App**: Refactorizado `app.py` para registrar blueprints en lugar de recursos Flask-RESTful directos.
+- **Endpoints**: Migrados de recursos monolíticos a blueprints basados en servicios, mejorando SRP y testeabilidad.
 
-### Added
-- **Postman Collection**: Created `API_Postman_Collection.json` with requests for all endpoints (Auth, Products, Categories, Favorites).
-- **Save Methods**: Added `save_products`, `save_categories`, `save_favorites` methods in `DatabaseConnection` for bulk saving without duplication.
-- **Validation**: Added category existence validation in product creation.
+### Removido
+- **Endpoints Antiguos**: Removido directorio `endpoints/` y registro directo de recursos en favor de blueprints y servicios.
+- **Directorios Obsoletos**: Removido `utils/` (antigua DatabaseConnection) y `__pycache__/` después de migración completa.
 
-### Changed
-- **Database Connection**: Updated endpoints to use `save_*` methods instead of `add_*` to prevent duplication.
-- **Favorites Endpoint**: Changed to use "db.json" instead of "favorites.json".
+### Agregado
+- **Diagramas UML**: Agregados diagramas PlantUML (`diagrams/original_architecture.puml` y `diagrams/refactored_architecture.puml`) para comparar arquitecturas.
 
-### Removed
-- Unused `add_*` calls in endpoints that were causing duplication.
+## [Refactor] - 2025-11-27
 
-## [Refactor] - 2025-11-29
+### Corregido
+- **Validación de Token**: Corregida discrepancia de token en endpoints de autenticación (productos, categorías, favoritos). Cambiada validación de "abcd1234" a "abcd12345" para coincidir con respuesta de auth.
+- **Duplicación en Favoritos**: Corregida duplicación al agregar favoritos reemplazando `add_favorite` con `save_favorites` en método POST.
+- **Duplicación en Categorías**: Corregida duplicación al crear/eliminar categorías agregando método `save_categories` y actualizando métodos POST/DELETE.
+- **Duplicación en Productos**: Corregida duplicación al crear productos agregando método `save_products` y actualizando método POST.
+- **Validación de Categoría**: Agregada validación en creación de productos para asegurar que la categoría existe antes de agregar el producto.
+- **Eliminación de Favoritos**: Agregada verificación en DELETE favoritos para retornar 404 si favorito no encontrado, en lugar de siempre 200.
+- **Análisis de Categorías**: Removido análisis de argumento duplicado en método DELETE categorías.
+- **Verificación de Existencia de Categorías**: Corregida verificación de existencia de categoría en POST categorías para verificar correctamente si el nombre existe.
+- **Filtro de Eliminación de Categorías**: Corregido filtro en DELETE categorías para usar nombre de categoría en lugar de objeto.
 
-### Added
-- **Models with Builder Pattern**: Created `Product`, `Category`, and `Favorite` models with Builder pattern for fluent object construction.
-- **Repository Pattern**: Implemented interfaces (`IProductRepository`, etc.) and JSON-based implementations for data persistence abstraction.
-- **Strategy Pattern for Auth**: Added `IAuthStrategy` interface and `TokenAuthStrategy` to eliminate auth duplication.
-- **Service Layer**: Introduced `ProductService`, `CategoryService`, and `FavoriteService` to separate business logic from controllers.
-- **Blueprints for Routing**: Modularized routes using Flask Blueprints (`auth_bp`, `products_bp`, etc.) for better organization.
-- **Dependency Injection**: Simple DI setup in blueprints for repositories and services.
+### Agregado
+- **Colección Postman**: Creada `API_Postman_Collection.json` con solicitudes para todos los endpoints (Auth, Productos, Categorías, Favoritos).
+- **Métodos de Guardado**: Agregados métodos `save_products`, `save_categories`, `save_favorites` en `DatabaseConnection` para guardado masivo sin duplicación.
+- **Validación**: Agregada validación de existencia de categoría en creación de productos.
 
-### Changed
-- **App Structure**: Refactored `app.py` to register blueprints instead of direct Flask-RESTful resources.
-- **Endpoints**: Migrated from monolithic resources to service-based blueprints, improving SRP and testability.
+### Cambiado
+- **Conexión de Base de Datos**: Actualizados endpoints para usar métodos `save_*` en lugar de `add_*` para prevenir duplicación.
+- **Endpoint de Favoritos**: Cambiado para usar "db.json" en lugar de "favorites.json".
 
-### Removed
-- **Old Endpoints**: Removed `endpoints/` directory and direct resource registration in favor of blueprints and services.
-- **Obsolete Directories**: Removed `utils/` (old DatabaseConnection) and `__pycache__/` after full migration.
-
-### Added
-- **UML Diagrams**: Added PlantUML diagrams (`diagrams/original_architecture.puml` and `diagrams/refactored_architecture.puml`) to compare architectures.
+### Removido
+- Llamadas `add_*` no utilizadas en endpoints que causaban duplicación.

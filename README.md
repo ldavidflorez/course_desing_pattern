@@ -1,58 +1,80 @@
-# Description
+# Descripción
 
-The following is a simple implementation of a REST API with poor coding practices and no software design. Try to improve this code by applying everything you've learned about software design patterns, clean code, and SOLID principles.
+A continuación se presenta una implementación simple de una API REST con malas prácticas de codificación y sin diseño de software. Intenta mejorar este código aplicando todo lo que has aprendido sobre patrones de diseño de software, código limpio y principios SOLID.
 
-# How to Run
+Esta versión ha sido refactorizada aplicando patrones de diseño como Builder, Repository, Strategy, Service Layer, Dependency Injection, Decorator y Blueprints, mejorando la mantenibilidad, testabilidad y extensibilidad.
 
-1. **Download Python** from [Python Official Website](https://www.python.org/downloads/).
+## Arquitectura
 
-2. **Install Python** and set up the environment variable.
+### Arquitectura Original
+![Arquitectura Original](out/diagrams/original_architecture/Original%20Architecture.svg)
 
-3. **Open Git Bash.** I recommend using Git Bash for the following steps.
+### Arquitectura Refactorizada
+![Arquitectura Refactorizada](out/diagrams/refactored_architecture/Refactored%20Architecture.svg)
 
-4. **Clone this repository** or unzip the folder and go to the folder
+Para más detalles sobre los cambios aplicados, incluyendo análisis de code smells, patrones implementados y decisiones de diseño, consulta [REFLECTION.md](REFLECTION.md).
 
-5. **Create a virtual environment** using the following command:
+# Cómo Ejecutar
+
+1. **Descarga Python** desde el [Sitio Oficial de Python](https://www.python.org/downloads/).
+
+2. **Instala Python** y configura la variable de entorno.
+
+3. **Abre Git Bash.** Recomiendo usar Git Bash para los siguientes pasos.
+
+4. **Clona este repositorio** o descomprime la carpeta y ve a la carpeta.
+
+5. **Crea un entorno virtual** usando el siguiente comando:
    ```
    python -m venv venv
    ```
 
-6. **Activate the virtual environment** with this command:
+6. **Activa el entorno virtual** con este comando:
    ```
    source venv/bin/activate
    ```
 
-7. **Install Flask** by running:
+7. **Instala las dependencias** ejecutando:
    ```
-   pip install Flask
-   ```
-
-8. **Install Flask-RESTful** with the following command:
-   ```
-   pip install flask_restful
+   pip install -r requirements.txt
    ```
 
-9. **Download Insomnia** from [Insomnia Website](https://insomnia.rest/download) or Postman
+8. **Descarga Insomnia** desde [Sitio de Insomnia](https://insomnia.rest/download) o Postman.
 
+9. **Ejecuta** la aplicación Flask con este comando:
+   ```
+   python app.py
+   ```
 
-10. **Run** the Flask app with this command:
-    ```
-    python app.py
-    ```
+10. **Usa Insomnia** o Postman para hacer solicitudes a la URL proporcionada por la aplicación Python.
 
-11. **Use Insomnia** or Postman to make requests to the URL provided by the Python app.
+## Cómo Ejecutar con Docker (Alternativa)
 
-Certainly, here are the improved and corrected steps for your API endpoints:
+Si prefieres usar Docker para ejecutar la aplicación de manera aislada y reproducible, sigue estos pasos:
+
+1. **Instala Docker** desde el [Sitio Oficial de Docker](https://www.docker.com/get-started).
+
+2. **Abre una terminal** en la raíz del proyecto.
+
+3. **Ejecuta el script de build** incluido:
+   ```
+   sh build.sh
+   ```
+   Este comando construirá la imagen Docker, detendrá cualquier contenedor anterior, y ejecutará un nuevo contenedor con la aplicación corriendo en `http://localhost:5000`. Los datos de la base de datos se persisten en la carpeta `data/` del host.
+
+4. **Usa Insomnia** o Postman para hacer solicitudes a `http://localhost:5000`.
+
+Nota: El script `build.sh` también incluye comandos para verificar logs y detener el contenedor.
 
 # Endpoints
 
-1. **Login**: Returns a fake token for authentication.
-    - **Method**: POST
-    - **Path**: /auth
+1. **Login**: Retorna un token falso para autenticación.
+    - **Método**: POST
+    - **Ruta**: /auth
 
-2. **Products**:
+2. **Productos**:
 
-   - **Get Products**
+   - **Obtener Productos**
      ```
      {
          "method": "GET",
@@ -61,7 +83,7 @@ Certainly, here are the improved and corrected steps for your API endpoints:
      }
      ```
 
-   - **Get Product**
+   - **Obtener Producto**
      ```
      {
          "method": "GET",
@@ -70,7 +92,7 @@ Certainly, here are the improved and corrected steps for your API endpoints:
      }
      ```
 
-   - **Get Products by Category**
+   - **Obtener Productos por Categoría**
      ```
      {
          "method": "GET",
@@ -79,7 +101,7 @@ Certainly, here are the improved and corrected steps for your API endpoints:
      }
      ```
 
-   - **Create Product**
+   - **Crear Producto**
      ```
      {
          "method": "POST",
@@ -93,9 +115,9 @@ Certainly, here are the improved and corrected steps for your API endpoints:
      }
      ```
 
-3. **Categories**
+3. **Categorías**
 
-   - **Get Categories**
+   - **Obtener Categorías**
      ```
      {
          "method": "GET",
@@ -104,7 +126,7 @@ Certainly, here are the improved and corrected steps for your API endpoints:
      }
      ```
 
-   - **Create Category**
+   - **Crear Categoría**
      ```
      {
          "method": "POST",
@@ -116,7 +138,7 @@ Certainly, here are the improved and corrected steps for your API endpoints:
      }
      ```
 
-   - **Delete Category**
+   - **Eliminar Categoría**
      ```
      {
          "method": "DELETE",
@@ -127,3 +149,58 @@ Certainly, here are the improved and corrected steps for your API endpoints:
          }
      }
      ```
+
+4. **Favoritos**
+
+   - **Obtener Favoritos**
+     ```
+     {
+         "method": "GET",
+         "path": "/favorites",
+         "authToken": "required"
+     }
+     ```
+
+   - **Agregar Favorito**
+     ```
+     {
+         "method": "POST",
+         "path": "/favorites",
+         "authToken": "required",
+         "body": {
+             "user_id": 1,
+             "product_id": 1
+         }
+     }
+     ```
+
+   - **Eliminar Favorito**
+     ```
+     {
+         "method": "DELETE",
+         "path": "/favorites",
+         "authToken": "required",
+         "body": {
+             "user_id": 1,
+             "product_id": 1
+         }
+     }
+     ```
+
+# Documentación Adicional
+
+- **REFLECTION.md**: Documento de reflexión que analiza los code smells identificados en el código original, propone patrones de diseño aplicables y detalla la implementación realizada, incluyendo decisiones de diseño y supuestos.
+
+- **CHANGELOG.md**: Registro de cambios que documenta todas las modificaciones realizadas durante la refactorización, organizadas por fecha y tipo de cambio (agregado, cambiado, corregido, removido).
+
+- **postman/API_Postman_Collection.json**: Colección de Postman con solicitudes preconfiguradas para probar todos los endpoints de la API, facilitando el testing y la validación de la funcionalidad.
+
+- **requirements.txt**: Lista de dependencias Python necesarias para ejecutar la aplicación.
+
+- **data/**: Carpeta que contiene los archivos de base de datos JSON (`db.json` para datos activos y `db_bck.json` como respaldo).
+
+- **diagrams/**: Carpeta con diagramas UML (en formato PlantUML) que ilustran la arquitectura original y refactorizada, ayudando a visualizar los cambios aplicados.
+
+- **Dockerfile** y **build.sh**: Archivos para construir y ejecutar la aplicación en un contenedor Docker, proporcionando una alternativa de despliegue aislada.
+
+Esta refactorización transforma el código de un enfoque procedural a una arquitectura orientada a objetos limpia, aplicando principios SOLID y patrones de diseño para mejorar la calidad del software.
