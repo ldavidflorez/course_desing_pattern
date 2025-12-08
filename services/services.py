@@ -85,13 +85,19 @@ class CategoryService:
 
 
 class FavoriteService:
-    def __init__(self, favorite_repo: IFavoriteRepository):
+    def __init__(self, favorite_repo: IFavoriteRepository, validation_service: ValidationService):
         self.favorite_repo = favorite_repo
+        self.validation_service = validation_service
 
     def get_all_favorites(self) -> list:
         return [f.to_dict() for f in self.favorite_repo.get_all()]
 
     def add_favorite(self, user_id: int, product_id: int):
+        data = {"user_id": user_id, "product_id": product_id}
+        errors = self.validation_service.validate_entity("favorite", data)
+        if errors:
+            return {"message": "Validation failed", "errors": errors}, 400
+
         favorite = (
             FavoriteBuilder().set_user_id(user_id).set_product_id(product_id).build()
         )

@@ -7,7 +7,7 @@ class ProductValidationStrategy(IValidationStrategy):
     def __init__(self, category_repo=None):
         self.chain = TypeValidator().set_next(
             RangeValidator().set_next(
-                ExistenceValidator(category_repo)
+                ExistenceValidator(category_repo, 'category')
             )
         )
 

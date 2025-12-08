@@ -28,7 +28,7 @@ class Container(containers.DeclarativeContainer):
     auth_context = providers.Singleton(AuthContext, strategy=auth_strategy)
 
     # Validation
-    validation_service = providers.Factory(ValidationService, category_repo=category_repo)
+    validation_service = providers.Factory(ValidationService, category_repo=category_repo, product_repo=product_repo)
 
     # Services
     product_service = providers.Factory(
@@ -41,5 +41,5 @@ class Container(containers.DeclarativeContainer):
     category_service = providers.Factory(CategoryService, category_repo=category_repo, validation_service=validation_service)
 
     favorite_service = providers.Factory(
-        FavoriteService, favorite_repo=favorite_repo
+        FavoriteService, favorite_repo=favorite_repo, validation_service=validation_service
     )
