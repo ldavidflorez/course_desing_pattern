@@ -1,10 +1,10 @@
 # Proyecto de Refactorización de API REST
 
 **Universidad Tecnológica de Bolívar**  
-**Hacia un código más legible y mantenible en el tiempo**  
+**Proyecto de software - fase 1**  
 **Curso: Patrones de Diseño de Software**  
-**Estudiante: Luis David Flórez Pareja**  
-**Noviembre de 2025**
+**Estudiantes: Luis David Flórez Pareja, Yhoan Smith Mosquera Peñaloza**  
+**Diciembre de 2025**
 
 # Descripción
 
