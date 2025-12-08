@@ -38,7 +38,7 @@ class Container(containers.DeclarativeContainer):
         validation_service=validation_service,
     )
 
-    category_service = providers.Factory(CategoryService, category_repo=category_repo)
+    category_service = providers.Factory(CategoryService, category_repo=category_repo, validation_service=validation_service)
 
     favorite_service = providers.Factory(
         FavoriteService, favorite_repo=favorite_repo

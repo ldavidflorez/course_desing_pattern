@@ -42,3 +42,19 @@ class ExistenceValidator(ValidationHandler):
         if errors:
             return errors
         return self._handle_next(data)
+
+
+class UniquenessValidator(ValidationHandler):
+    def __init__(self, category_repo=None):
+        super().__init__()
+        self.category_repo = category_repo
+
+    def handle(self, data: Dict) -> Dict:
+        errors = {}
+        if 'name' in data and self.category_repo:
+            categories = self.category_repo.get_all()
+            if any(cat.name.lower() == data['name'].lower() for cat in categories):
+                errors['name'] = 'Category already exists'
+        if errors:
+            return errors
+        return self._handle_next(data)

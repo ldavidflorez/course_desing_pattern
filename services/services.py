@@ -50,8 +50,9 @@ class ProductService:
 
 
 class CategoryService:
-    def __init__(self, category_repo: ICategoryRepository):
+    def __init__(self, category_repo: ICategoryRepository, validation_service: ValidationService):
         self.category_repo = category_repo
+        self.validation_service = validation_service
 
     def get_all_categories(self) -> list:
         return [c.to_dict() for c in self.category_repo.get_all()]
@@ -63,9 +64,10 @@ class CategoryService:
             return {"message": "Category not found"}, 404
 
     def create_category(self, name: str):
-        categories = self.category_repo.get_all()
-        if any(cat.name.lower() == name.lower() for cat in categories):
-            return {"message": "Category already exists"}, 400
+        data = {"name": name}
+        errors = self.validation_service.validate_entity("category", data)
+        if errors:
+            return {"message": "Validation failed", "errors": errors}, 400
 
         category = CategoryBuilder().set_name(name).build()
         self.category_repo.add(category)
