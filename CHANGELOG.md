@@ -2,6 +2,23 @@
 
 Todos los cambios notables en este proyecto se documentarán en este archivo.
 
+## [Módulo de Validación] - 2025-11-29
+
+### Agregado
+- **Módulo de Validación Completo**: Implementado módulo de validación robusto usando patrones Strategy y Chain of Responsibility.
+- **ValidationService**: Servicio central que coordina la validación de entidades (productos, categorías, favoritos).
+- **Estrategias de Validación**: Implementadas estrategias específicas para cada tipo de entidad con validaciones personalizadas.
+- **Manejadores de Validación**: Cadena de responsabilidad con validadores para tipo, rango, existencia y unicidad.
+- **Integración DI**: Agregado proveedor de `ValidationService` al contenedor de dependencias.
+- **Documentación Completa**: Creados documentos de diseño, historias de usuario, épica, sprint y presentación del módulo.
+
+### Cambiado
+- **Servicios**: Actualizados `ProductService`, `CategoryService` y `FavoriteService` para inyectar y usar `ValidationService` en métodos de creación y actualización.
+- **Arquitectura**: Mejorada la arquitectura del proyecto con validaciones consistentes y reutilizables.
+
+### Corregido
+- **Importaciones Relativas**: Corregidas rutas de importación en estrategias de validación para compatibilidad con estructura de paquetes.
+
 ## [Mejora DI] - 2025-11-29
 
 ### Agregado
