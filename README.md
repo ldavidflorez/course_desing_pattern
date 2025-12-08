@@ -357,24 +357,15 @@ class IValidationStrategy(ABC):
 
 **Implementación:**
 ```python
-class ValidationService:
-    def __init__(self, category_repo: ICategoryRepository, product_repo: IProductRepository):
-        self.context = ValidationContext()
-        self.category_repo = category_repo
-        self.product_repo = product_repo
+class ProductValidationStrategy(IValidationStrategy):
+    def __init__(self, category_repo=None, product_repo=None):
+        self.chain = TypeValidator()
+        self.chain.set_next(RangeValidator())\
+              .set_next(ExistenceValidator(category_repo, 'category'))\
+              .set_next(UniquenessValidator(product_repo, 'product'))
 
-    def validate_entity(self, entity_type: str, data: Dict) -> Dict:
-        # Seleccionar estrategia apropiada
-        if entity_type == 'product':
-            strategy = ProductValidationStrategy(self.category_repo)
-        elif entity_type == 'category':
-            strategy = CategoryValidationStrategy(self.category_repo)
-        elif entity_type == 'favorite':
-            strategy = FavoriteValidationStrategy(self.product_repo)
-
-        # Ejecutar validación
-        self.context.set_strategy(strategy)
-        return self.context.validate(data)
+    def validate(self, data: Dict) -> Dict:
+        return self.chain.handle(data)
 ```
 
 **Justificación:**
@@ -402,7 +393,7 @@ class ValidationService:
 - Asegura integridad referencial antes de crear relaciones
 
 #### 4. **Validación de Unicidad (UniquenessValidator)**
-- Valida que no existan duplicados (ej: nombres de categorías únicos)
+- Valida que no existan duplicados (ej: nombres de categorías y productos únicos)
 - Consulta repositorios para verificar unicidad
 - Previene conflictos de datos en entidades que requieren nombres únicos
 

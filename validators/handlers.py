@@ -59,16 +59,21 @@ class ExistenceValidator(ValidationHandler):
 
 
 class UniquenessValidator(ValidationHandler):
-    def __init__(self, category_repo=None):
+    def __init__(self, repo=None, entity_type='category'):
         super().__init__()
-        self.category_repo = category_repo
+        self.repo = repo
+        self.entity_type = entity_type
 
     def handle(self, data: Dict) -> Dict:
         errors = {}
-        if 'name' in data and self.category_repo:
-            categories = self.category_repo.get_all()
+        if self.entity_type == 'category' and 'name' in data and self.repo:
+            categories = self.repo.get_all()
             if any(cat.name.lower() == data['name'].lower() for cat in categories):
                 errors['name'] = 'Category already exists'
+        elif self.entity_type == 'product' and 'name' in data and self.repo:
+            products = self.repo.get_all()
+            if any(prod.name.lower() == data['name'].lower() for prod in products):
+                errors['name'] = 'Product already exists'
         if errors:
             return errors
         return self._handle_next(data)

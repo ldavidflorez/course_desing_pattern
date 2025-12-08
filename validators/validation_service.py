@@ -14,7 +14,7 @@ class ValidationService:
 
     def validate_entity(self, entity_type: str, data: Dict) -> Dict:
         if entity_type == 'product':
-            strategy = ProductValidationStrategy(self.category_repo)
+            strategy = ProductValidationStrategy(self.category_repo, self.product_repo)
             self.context.set_strategy(strategy)
             return self.context.validate(data)
         elif entity_type == 'category':

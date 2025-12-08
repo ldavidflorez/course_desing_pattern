@@ -12,33 +12,45 @@ class TestProductValidationStrategy:
     def category_repo(self):
         return JsonCategoryRepository(json_file_path="data/db.json")
 
-    def test_validate_valid_product(self, category_repo):
+    @pytest.fixture
+    def product_repo(self):
+        return JsonProductRepository(json_file_path="data/db.json")
+
+    def test_validate_valid_product(self, category_repo, product_repo):
         """Test validating a valid product."""
-        strategy = ProductValidationStrategy(category_repo)
-        data = {"name": "Test Product", "price": 10.99, "category": "men"}
+        import time
+        strategy = ProductValidationStrategy(category_repo, product_repo)
+        data = {"name": f"Completely New Test Product {int(time.time())}", "price": 10.99, "category": "men"}
         errors = strategy.validate(data)
         assert errors == {}
 
-    def test_validate_invalid_name(self, category_repo):
+    def test_validate_invalid_name(self, category_repo, product_repo):
         """Test validating a product with empty name."""
-        strategy = ProductValidationStrategy(category_repo)
+        strategy = ProductValidationStrategy(category_repo, product_repo)
         data = {"name": "", "price": 10.99, "category": "men"}
         errors = strategy.validate(data)
         assert "name" in errors
 
-    def test_validate_invalid_price(self, category_repo):
+    def test_validate_invalid_price(self, category_repo, product_repo):
         """Test validating a product with negative price."""
-        strategy = ProductValidationStrategy(category_repo)
+        strategy = ProductValidationStrategy(category_repo, product_repo)
         data = {"name": "Test Product", "price": -5.0, "category": "men"}
         errors = strategy.validate(data)
         assert "price" in errors
 
-    def test_validate_invalid_category(self, category_repo):
+    def test_validate_invalid_category(self, category_repo, product_repo):
         """Test validating a product with non-existent category."""
-        strategy = ProductValidationStrategy(category_repo)
+        strategy = ProductValidationStrategy(category_repo, product_repo)
         data = {"name": "Test Product", "price": 10.99, "category": "nonexistent"}
         errors = strategy.validate(data)
         assert "category" in errors
+
+    def test_validate_duplicate_product(self, category_repo, product_repo):
+        """Test validating a duplicate product."""
+        strategy = ProductValidationStrategy(category_repo, product_repo)
+        data = {"name": "T-Shirt", "price": 10.99, "category": "men"}  # Exists in db.json
+        errors = strategy.validate(data)
+        assert "name" in errors
 
 
 class TestCategoryValidationStrategy:
