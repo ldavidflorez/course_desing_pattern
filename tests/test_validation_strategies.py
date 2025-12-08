@@ -50,8 +50,9 @@ class TestCategoryValidationStrategy:
 
     def test_validate_valid_category(self, category_repo):
         """Test validating a valid category."""
+        import time
         strategy = CategoryValidationStrategy(category_repo)
-        data = {"name": "New Category"}
+        data = {"name": f"Completely New Test Category {int(time.time())}"}
         errors = strategy.validate(data)
         assert errors == {}
 

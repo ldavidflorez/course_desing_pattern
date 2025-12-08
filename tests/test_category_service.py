@@ -26,7 +26,9 @@ class TestCategoryService:
 
     def test_create_category_valid(self, category_service):
         """Test creating a valid category."""
-        result = category_service.create_category("Super Unique Category")
+        import time
+        unique_name = f"Ultra Unique Test Category {int(time.time())}"
+        result = category_service.create_category(unique_name)
         assert result[1] == 201
         assert result[0]["message"] == "Category added successfully"
 
