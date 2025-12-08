@@ -3,6 +3,10 @@ from typing import Dict, Optional
 
 
 class ValidationHandler(ABC):
+    """
+    Clase base para el patrón Chain of Responsibility.
+    Permite encadenar validadores que procesan datos secuencialmente.
+    """
     def __init__(self):
         self._next_handler: Optional[ValidationHandler] = None
 

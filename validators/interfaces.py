@@ -3,6 +3,10 @@ from typing import Dict
 
 
 class IValidationStrategy(ABC):
+    """
+    Interfaz para estrategias de validación, siguiendo el patrón Strategy.
+    Permite intercambiar algoritmos de validación sin cambiar el contexto.
+    """
     @abstractmethod
     def validate(self, data: Dict) -> Dict:
         """
