@@ -137,6 +137,18 @@
             "name": "nameProduct",
             "category": "nameCategory",
             "price": 9
+        },
+        {
+            "id": 24,
+            "name": "Test Product",
+            "category": "men",
+            "price": 10.99
+        },
+        {
+            "id": 25,
+            "name": "Test Product",
+            "category": "men",
+            "price": 10.99
         }
     ],
     "categories": [
@@ -155,7 +167,44 @@
         {
             "id": 4,
             "name": "girls"
+        },
+        {
+            "id": 5,
+            "name": "Test Category Unique"
+        },
+        {
+            "id": 6,
+            "name": "Duplicate Category"
+        },
+        {
+            "id": 7,
+            "name": "Another Test Category"
         }
     ],
-    "favorites": []
+    "favorites": [
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": -1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 999
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 999
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        }
+    ]
 }

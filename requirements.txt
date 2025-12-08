@@ -1,3 +1,5 @@
 dependency-injector
 Flask
 Flask-RESTful
+pytest
+pytest-cov
