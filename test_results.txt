@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.3, pytest-8.4.2, pluggy-1.6.0
+rootdir: C:\Users\ldavi\OneDrive\Escritorio\root\UTB\Patrones de Diseño de Software\s4\course_desing_patterns
+plugins: anyio-4.11.0, Faker-35.0.0, langsmith-0.3.45, asyncio-0.21.1, cov-7.0.0, mock-3.15.1, typeguard-2.13.3
+asyncio: mode=Mode.STRICT
+collected 53 items
+
+tests\test_categories_blueprint.py ....                                  [  7%]
+tests\test_category_service.py .....                                     [ 16%]
+tests\test_favorite_service.py ....                                      [ 24%]
+tests\test_favorites_blueprint.py ....                                   [ 32%]
+tests\test_product_service.py ......                                     [ 43%]
+tests\test_products_blueprint.py ....                                    [ 50%]
+tests\test_validation_handlers.py ...............                        [ 79%]
+tests\test_validation_strategies.py ...........                          [100%]
+
+- generated xml file: C:\Users\ldavi\OneDrive\Escritorio\root\UTB\Patrones de Diseño de Software\s4\course_desing_patterns\test_results.xml -
+============================= 53 passed in 1.52s ==============================

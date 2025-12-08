@@ -28,7 +28,9 @@ class TestProductService:
 
     def test_create_product_valid(self, product_service):
         """Test creating a valid product."""
-        result = product_service.create_product("Test Product", "men", 10.99)
+        import time
+        unique_name = f"Test Product {int(time.time())}"
+        result = product_service.create_product(unique_name, "men", 10.99)
         assert result[1] == 201
         assert result[0]["message"] == "Product added"
 
