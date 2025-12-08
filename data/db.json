@@ -161,6 +161,36 @@
             "name": "Test Product",
             "category": "men",
             "price": 10.99
+        },
+        {
+            "id": 28,
+            "name": "Test Product",
+            "category": "men",
+            "price": 10.99
+        },
+        {
+            "id": 29,
+            "name": "Test Product",
+            "category": "men",
+            "price": 10.99
+        },
+        {
+            "id": 30,
+            "name": "Test Product",
+            "category": "men",
+            "price": 10.99
+        },
+        {
+            "id": 31,
+            "name": "Test Product",
+            "category": "men",
+            "price": 10.99
+        },
+        {
+            "id": 32,
+            "name": "Test Product",
+            "category": "men",
+            "price": 10.99
         }
     ],
     "categories": [
@@ -199,6 +229,30 @@
         {
             "id": 9,
             "name": "Super Unique Category"
+        },
+        {
+            "id": 10,
+            "name": "New Category"
+        },
+        {
+            "id": 11,
+            "name": "New Test Category"
+        },
+        {
+            "id": 12,
+            "name": "Ultra Unique Test Category 12345"
+        },
+        {
+            "id": 13,
+            "name": "Ultra Unique Test Category 1765166533"
+        },
+        {
+            "id": 14,
+            "name": "Ultra Unique Test Category 1765166588"
+        },
+        {
+            "id": 15,
+            "name": "Ultra Unique Test Category 1765167420"
         }
     ],
     "favorites": [
@@ -221,6 +275,54 @@
         {
             "user_id": 1,
             "product_id": 999
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
+        },
+        {
+            "user_id": 1,
+            "product_id": 1
         },
         {
             "user_id": 1,
