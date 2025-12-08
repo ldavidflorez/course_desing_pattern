@@ -1,5 +1,5 @@
-from .interfaces import IValidationStrategy
-from .handlers import TypeValidator, RangeValidator, ExistenceValidator
+from ..interfaces import IValidationStrategy
+from ..handlers import TypeValidator, RangeValidator, ExistenceValidator
 from typing import Dict
 
 
