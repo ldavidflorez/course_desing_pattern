@@ -10,6 +10,7 @@ Todos los cambios notables en este proyecto se documentarán en este archivo.
 - **Estrategias de Validación**: Implementadas estrategias específicas para cada tipo de entidad con validaciones personalizadas.
 - **Manejadores de Validación**: Cadena de responsabilidad con validadores para tipo, rango, existencia y unicidad.
 - **Integración DI**: Agregado proveedor de `ValidationService` al contenedor de dependencias.
+- **Suite de Pruebas Completa**: Implementadas pruebas unitarias para servicios existentes (HU5) y módulo de validación (HU6) con 96% de cobertura.
 - **Documentación Completa**: Creados documentos de diseño, historias de usuario, épica, sprint y presentación del módulo.
 
 ### Cambiado
@@ -18,6 +19,8 @@ Todos los cambios notables en este proyecto se documentarán en este archivo.
 
 ### Corregido
 - **Importaciones Relativas**: Corregidas rutas de importación en estrategias de validación para compatibilidad con estructura de paquetes.
+- **Cadena de Validación**: Corregida configuración de cadena de responsabilidad en estrategias de validación.
+- **Validador de Existencia**: Actualizado para manejar validación de productos en favoritos.
 
 ## [Mejora DI] - 2025-11-29
 
