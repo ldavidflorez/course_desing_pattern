@@ -8,10 +8,11 @@ from repositories.json_repositories import (
 from strategies.auth_strategies import TokenAuthStrategy
 from strategies.auth_context import AuthContext
 from services.services import ProductService, CategoryService, FavoriteService
+from validators.validation_service import ValidationService
 
 
 class Container(containers.DeclarativeContainer):
-    wiring_config = containers.WiringConfiguration(packages=["blueprints"])
+    wiring_config = containers.WiringConfiguration(packages=["blueprints", "validators"])
 
     # Repositories
     product_repo = providers.Singleton(JsonProductRepository, json_file_path="data/db.json")
@@ -26,11 +27,15 @@ class Container(containers.DeclarativeContainer):
     auth_strategy = providers.Singleton(TokenAuthStrategy)
     auth_context = providers.Singleton(AuthContext, strategy=auth_strategy)
 
+    # Validation
+    validation_service = providers.Factory(ValidationService, category_repo=category_repo)
+
     # Services
     product_service = providers.Factory(
         ProductService,
         product_repo=product_repo,
         category_repo=category_repo,
+        validation_service=validation_service,
     )
 
     category_service = providers.Factory(CategoryService, category_repo=category_repo)

@@ -30,7 +30,7 @@ Todos los cambios notables en este proyecto se documentarán en este archivo.
 ### Cambiado
 - **Diagrama de Arquitectura**: Actualizado `refactored_architecture.puml` para remover métodos `authenticate()` de servicios, remover inyección de AuthContext de servicios y agregar clase AuthDecorator.
 
-## [Refactor] - 2025-11-28
+## [Refactor] - 2025-11-29
 
 ### Agregado
 - **Modelos con Patrón Builder**: Creados modelos `Product`, `Category` y `Favorite` con patrón Builder para construcción fluida de objetos.
@@ -51,7 +51,7 @@ Todos los cambios notables en este proyecto se documentarán en este archivo.
 ### Agregado
 - **Diagramas UML**: Agregados diagramas PlantUML (`diagrams/original_architecture.puml` y `diagrams/refactored_architecture.puml`) para comparar arquitecturas.
 
-## [Refactor] - 2025-11-27
+## [Refactor] - 2025-11-28
 
 ### Corregido
 - **Validación de Token**: Corregida discrepancia de token en endpoints de autenticación (productos, categorías, favoritos). Cambiada validación de "abcd1234" a "abcd12345" para coincidir con respuesta de auth.

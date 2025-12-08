@@ -1,0 +1,92 @@
+@startuml Validation Module High-Level Design
+
+interface IValidationStrategy {
+    +validate(data: dict) -> dict
+}
+
+class ValidationContext {
+    -strategy: IValidationStrategy
+    +set_strategy(strategy: IValidationStrategy)
+    +validate(data: dict) -> dict
+}
+
+class ValidationService {
+    -context: ValidationContext
+    -product_repo: IProductRepository
+    -category_repo: ICategoryRepository
+    -favorite_repo: IFavoriteRepository
+    +validate_entity(entity_type: str, data: dict) -> dict
+}
+
+class ProductValidationStrategy {
+    -chain: ValidationHandler
+    +validate(data: dict) -> dict
+}
+
+class CategoryValidationStrategy {
+    -chain: ValidationHandler
+    +validate(data: dict) -> dict
+}
+
+class FavoriteValidationStrategy {
+    -chain: ValidationHandler
+    +validate(data: dict) -> dict
+}
+
+abstract class ValidationHandler {
+    -next_handler: ValidationHandler
+    +set_next(handler: ValidationHandler) -> ValidationHandler
+    +handle(data: dict) -> dict
+}
+
+class TypeValidator {
+    +handle(data: dict) -> dict
+}
+
+class RangeValidator {
+    +handle(data: dict) -> dict
+}
+
+class UniquenessValidator {
+    +handle(data: dict) -> dict
+}
+
+class ExistenceValidator {
+    +handle(data: dict) -> dict
+}
+
+IValidationStrategy <|.. ProductValidationStrategy
+IValidationStrategy <|.. CategoryValidationStrategy
+IValidationStrategy <|.. FavoriteValidationStrategy
+
+ValidationContext --> IValidationStrategy : uses
+
+ValidationService --> ValidationContext : uses
+ValidationService --> IProductRepository : injected
+ValidationService --> ICategoryRepository : injected
+ValidationService --> IFavoriteRepository : injected
+
+ProductValidationStrategy --> ValidationHandler : chain
+CategoryValidationStrategy --> ValidationHandler : chain
+FavoriteValidationStrategy --> ValidationHandler : chain
+
+ValidationHandler <|-- TypeValidator
+ValidationHandler <|-- RangeValidator
+ValidationHandler <|-- UniquenessValidator
+ValidationHandler <|-- ExistenceValidator
+
+TypeValidator --> RangeValidator : next
+RangeValidator --> UniquenessValidator : next
+UniquenessValidator --> ExistenceValidator : next
+
+note right of ValidationService
+    Servicio principal que orquesta
+    validaciones usando el contexto.
+end note
+
+note right of ValidationHandler
+    Cadena de responsabilidad para
+    validaciones secuenciales.
+end note
+
+@enduml

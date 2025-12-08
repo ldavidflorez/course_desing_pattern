@@ -6,6 +6,7 @@ from repositories.interfaces import (
 from models.product import Product, ProductBuilder
 from models.category import Category, CategoryBuilder
 from models.favorite import Favorite, FavoriteBuilder
+from validators.validation_service import ValidationService
 
 
 class ProductService:
@@ -13,9 +14,11 @@ class ProductService:
         self,
         product_repo: IProductRepository,
         category_repo: ICategoryRepository,
+        validation_service: ValidationService,
     ):
         self.product_repo = product_repo
         self.category_repo = category_repo
+        self.validation_service = validation_service
 
     def get_all_products(self) -> list:
         return [p.to_dict() for p in self.product_repo.get_all()]
@@ -30,9 +33,10 @@ class ProductService:
         return [p.to_dict() for p in self.product_repo.get_by_category(category)]
 
     def create_product(self, name: str, category: str, price: float):
-        categories = self.category_repo.get_all()
-        if not any(cat.name.lower() == category.lower() for cat in categories):
-            return {"message": "Category does not exist"}, 400
+        data = {"name": name, "category": category, "price": price}
+        errors = self.validation_service.validate_entity("product", data)
+        if errors:
+            return {"message": "Validation failed", "errors": errors}, 400
 
         product = (
             ProductBuilder()
