@@ -249,6 +249,10 @@ validators/
     └── product_validator.py
 ```
 
+### 🖼️ Diagrama de Arquitectura
+
+![Diagrama de Arquitectura del Módulo de Validación](out/diagrams/validation_module_diagram/Validation%20Module%20High-Level%20Design.svg)
+
 ### 🔄 Flujo de Validación
 
 ```
