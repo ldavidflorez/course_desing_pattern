@@ -10,27 +10,26 @@ from validators.validation_service import ValidationService
 
 
 class ProductService:
-    def __init__(
-        self,
-        product_repo: IProductRepository,
-        category_repo: ICategoryRepository,
-        validation_service: ValidationService,
-    ):
+    def __init__(self, product_repo: IProductRepository, category_repo: ICategoryRepository, validation_service: ValidationService):
         self.product_repo = product_repo
         self.category_repo = category_repo
         self.validation_service = validation_service
 
+    def _to_dict_list(self, items: list) -> list:
+        return [i.to_dict() for i in items]
+
     def get_all_products(self) -> list:
-        return [p.to_dict() for p in self.product_repo.get_all()]
+        return self._to_dict_list(self.product_repo.get_all())
 
     def get_product_by_id(self, id: int):
         try:
             return self.product_repo.get_by_id(id).to_dict()
         except ValueError:
-            return {"message": "Product not found"}, 404
+            # For service-level usage, return None when not found (tests expect None)
+            return None
 
     def get_products_by_category(self, category: str) -> list:
-        return [p.to_dict() for p in self.product_repo.get_by_category(category)]
+        return self._to_dict_list(self.product_repo.get_by_category(category))
 
     def create_product(self, name: str, category: str, price: float):
         data = {"name": name, "category": category, "price": price}
@@ -38,13 +37,7 @@ class ProductService:
         if errors:
             return {"message": "Validation failed", "errors": errors}, 400
 
-        product = (
-            ProductBuilder()
-            .set_name(name)
-            .set_category(category)
-            .set_price(price)
-            .build()
-        )
+        product = ProductBuilder().set_name(name).set_category(category).set_price(price).build()
         self.product_repo.add(product)
         return {"message": "Product added", "product": product.to_dict()}, 201
 
@@ -54,14 +47,17 @@ class CategoryService:
         self.category_repo = category_repo
         self.validation_service = validation_service
 
+    def _to_dict_list(self, items: list) -> list:
+        return [i.to_dict() for i in items]
+
     def get_all_categories(self) -> list:
-        return [c.to_dict() for c in self.category_repo.get_all()]
+        return self._to_dict_list(self.category_repo.get_all())
 
     def get_category_by_id(self, id: int):
         try:
             return self.category_repo.get_by_id(id).to_dict()
         except ValueError:
-            return {"message": "Category not found"}, 404
+            return None
 
     def create_category(self, name: str):
         data = {"name": name}
@@ -74,13 +70,13 @@ class CategoryService:
         return {"message": "Category added successfully"}, 201
 
     def delete_category(self, name: str):
+        # Load once and compute filtered list
         categories = self.category_repo.get_all()
-        category_to_remove = next((cat for cat in categories if cat.name == name), None)
-        if not category_to_remove:
+        updated = [cat for cat in categories if cat.name != name]
+        if len(updated) == len(categories):
             return {"message": "Category not found"}, 404
 
-        updated_categories = [cat for cat in categories if cat.name != name]
-        self.category_repo.save_all(updated_categories)
+        self.category_repo.save_all(updated)
         return {"message": "Category removed successfully"}, 200
 
 
@@ -98,14 +94,14 @@ class FavoriteService:
         if errors:
             return {"message": "Validation failed", "errors": errors}, 400
 
-        favorite = (
-            FavoriteBuilder().set_user_id(user_id).set_product_id(product_id).build()
-        )
+        # Prevent duplicate favorites
+        favorites = self.favorite_repo.get_all()
+        if any(f.user_id == user_id and f.product_id == product_id for f in favorites):
+            return {"message": "Favorite already exists"}, 400
+
+        favorite = FavoriteBuilder().set_user_id(user_id).set_product_id(product_id).build()
         self.favorite_repo.add(favorite)
-        return {
-            "message": "Product added to favorites",
-            "favorite": favorite.to_dict(),
-        }, 201
+        return {"message": "Product added to favorites", "favorite": favorite.to_dict()}, 201
 
     def remove_favorite(self, user_id: int, product_id: int):
         favorites = self.favorite_repo.get_all()
