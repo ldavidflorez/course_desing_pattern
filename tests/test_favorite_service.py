@@ -1,5 +1,7 @@
 import pytest
+import time
 from models.favorite import Favorite
+from models.product import Product
 
 
 class TestFavoriteService:
@@ -17,9 +19,15 @@ class TestFavoriteService:
         products = product_repo.get_all()
         if not products:
             # Create a test product first
-            product_repo.create({"id": 1, "name": "Test Product", "price": 10.0, "category_id": 1})
+            product = Product(id=None, name="Test Product", category="test", price=10.0)
+            product_repo.add(product)
+            product_id = product.id  # ID assigned by the repository
+        else:
+            product_id = products[0].id  # Use existing product
 
-        result = favorite_service.add_favorite(1, 1)
+        # Use a unique user_id to avoid conflicts
+        user_id = int(time.time() * 1000000) % 1000000  # Unique-ish ID
+        result = favorite_service.add_favorite(user_id, product_id)
         assert result[1] == 201
         assert result[0]["message"] == "Product added to favorites"
 

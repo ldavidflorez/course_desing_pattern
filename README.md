@@ -1,14 +1,14 @@
 # Proyecto de Refactorización de API REST
 
 **Universidad Tecnológica de Bolívar**  
-**Proyecto de software - fase 1**  
+**Proyecto de software - fase 2**  
 **Curso: Patrones de Diseño de Software**  
 **Estudiantes: Luis David Flórez Pareja, Yhoan Smith Mosquera Peñaloza**  
 **Diciembre de 2025**
 
 # Descripción
 
-> **Nota importante:** El código original con malas prácticas de codificación está disponible en la rama `main`. Esta rama `refactor` contiene la versión mejorada aplicando patrones de diseño y principios SOLID.
+> **Nota importante:** El código original con malas prácticas de codificación está disponible en la rama `main`. Esta rama `refactor` contiene la versión mejorada aplicando patrones de diseño y principios SOLID. Para más detalles sobre el módulo de validación, consulta [VALIDATION_MODULE.md](VALIDATION_MODULE.md).
 
 A continuación se presenta una comparación entre una implementación original de una API REST con malas prácticas de codificación y sin diseño de software, y su versión refactorizada. La implementación original (disponible en la rama `main`) sirve como base para aplicar mejoras utilizando patrones de diseño de software, código limpio y principios SOLID.
 
